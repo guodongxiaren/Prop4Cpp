@@ -147,13 +147,6 @@ int main()
         cout<<prop.getProperty("name");
     }
     cout<<endl;
-    /*
-    set<string> ss = prop.stringPropertyNames();
-    for(auto key:ss)
-    {
-        cout<<key<<endl;
-    }
-    */
     prop.list(cout);
 }
 
