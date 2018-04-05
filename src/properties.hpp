@@ -72,7 +72,7 @@ const char* Properties::setProperty(string key, string value)
 const char* Properties::getProperty(string key)
 {
     Dict::iterator it = _dict.find(key);
-    return (it == _dict.end())? nullptr : it->second.c_str();
+    return (it == _dict.end())? NULL : it->second.c_str();
 }
 
 const char* Properties::getProperty(string key, const char* defaultValue)
