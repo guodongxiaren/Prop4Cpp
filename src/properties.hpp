@@ -37,10 +37,10 @@ public:
     Properties();
     Properties(Properties& defaults);
 
-    const char* setProperty(string key, string value);
+    string&& setProperty(string key, string value);
 
-    const char* getProperty(string key);
-    const char* getProperty(string key, const char* defaultValue);
+    string getProperty(string key);
+    string getProperty(string key, const char* defaultValue);
     string getProperty(string key, string defaultValue);
 
     void load(istream& inStream);
@@ -57,34 +57,34 @@ Properties::Properties()
     
 }
 
-const char* Properties::setProperty(string key, string value)
+string&& Properties::setProperty(string key, string value)
 {
-    const char* preValue = getProperty(key, value.c_str());
-    if (!preValue)
+    string preValue = getProperty(key, value);
+    if (preValue == "")
     {
         _dict.insert(Dict::value_type(key, value));
-        return preValue;
+        return move(preValue);
     }
     _dict[key] = value;
-    return preValue;
+    return move(preValue);
     
 }
-const char* Properties::getProperty(string key)
+string Properties::getProperty(string key)
 {
     Dict::iterator it = _dict.find(key);
-    return (it == _dict.end())? NULL : it->second.c_str();
+    return (it == _dict.end())? "" : it->second;
 }
 
-const char* Properties::getProperty(string key, const char* defaultValue)
+string Properties::getProperty(string key, const char* defaultValue)
 {
     Dict::iterator it = _dict.find(key);
-    return (it == _dict.end())? defaultValue : it->second.c_str();
+    return (it == _dict.end())? defaultValue : move(it->second);
 }
 
 string Properties::getProperty(string key, string defaultValue)
 {
     Dict::iterator it = _dict.find(key);
-    return (it == _dict.end())? defaultValue : it->second;
+    return (it == _dict.end())? defaultValue : move(it->second);
 }
 
 void Properties::load(istream& inStream)
